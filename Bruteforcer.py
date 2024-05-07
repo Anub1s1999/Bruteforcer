@@ -6,9 +6,9 @@ import warnings
 # Suppress InsecureRequestWarning
 warnings.filterwarnings("ignore", message="Unverified HTTPS request is being made.*")
 
-url = "https://connections.marvel.ru/files/j_security_check"
+url = "https://"
 headers = {
-    "Host": "connections.marvel.ru",
+    "Host": "",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.5",
