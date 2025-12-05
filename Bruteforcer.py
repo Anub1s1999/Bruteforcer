@@ -4,6 +4,7 @@ import requests
 import warnings
 import pyfiglet
 import argparse
+import tkinter.messagebox as messagebox
 
 # Suppress InsecureRequestWarning
 warnings.filterwarnings("ignore", message="Unverified HTTPS request is being made.*")
@@ -88,6 +89,8 @@ def SendReq(session, url, headers, data, mail, Password):
     elif response_size != expected_response_size:
         print("*** DIFFERENT RESPONSE SIZE DETECTED! ***")
         different_attempts.append((request_size, mail, Password, response_size))
+        # Pop up a message box
+        messagebox.showinfo("Brute Force Alert", f"Different response size detected!\nUsername: {mail}\nPassword: {Password}\nResponse Size: {response_size}")
     print("Response Size:", response_size)
     print("-------------------------------------\n")
 
@@ -112,4 +115,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
